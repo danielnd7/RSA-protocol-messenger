@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>RSA-messenger</groupId>
-  <artifactId>RSAproject</artifactId>
+  <artifactId>RSA-protocol-messenger</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>RSAproject</name>
+  <name>RSA-protocol-messenger</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -15,10 +15,11 @@
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.10.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
