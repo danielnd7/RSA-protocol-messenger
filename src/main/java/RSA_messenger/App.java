@@ -1,9 +1,5 @@
 package RSA_messenger;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
