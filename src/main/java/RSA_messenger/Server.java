@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Server { // Server mock
+    private Map<PublicUser, MessagesPair> allUsersMessages;
 
-    private Map<PublicUser, List<String>> receivedMessages;
-    private Map<PublicUser, List<String>> sentMessages;
+    // Constructor
+    public Server(){
+
+    }
 
     private List<PublicUser> usersList;
     private List<Message> allMessages;

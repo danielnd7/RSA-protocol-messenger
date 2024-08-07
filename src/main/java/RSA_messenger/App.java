@@ -12,6 +12,7 @@ public class App {
     // All methods
     public void loadServerFromFile(){
         // if there is no the file, setServer will be called
+        Server server1 = new Server();
     }
     public void loadPrivateUserFromFile(){
         //... In case of absence, calls CreateUser
@@ -22,9 +23,11 @@ public class App {
     }
 
     public void send(){
+        System.out.println("sending messages");
 
     }
     public void read(){
+        System.out.println("reading messages");
 
     }
 
