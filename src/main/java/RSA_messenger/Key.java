@@ -1,5 +1,0 @@
-package RSA_messenger;
-
-public enum Key {
-    // how to use enum?????????
-}

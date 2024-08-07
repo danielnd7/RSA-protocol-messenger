@@ -6,7 +6,7 @@ public class Server { // Server mock
     private List<PublicUser> usersList;
     private List<Message> allMessages;
 
-    // basic methods
+    // Basic methods
     public List<PublicUser> getUsersList() {
         return usersList;
     }
