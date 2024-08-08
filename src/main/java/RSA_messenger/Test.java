@@ -7,7 +7,8 @@ public class Test
     public static void main( String[] args )
     {
         int selectedOption = 0;
-        System.out.println( "\nWelcome to RSA-protocol-messenger!" );
+        printCP2DLogo();
+        System.out.println( "\nWelcome to RSA-protocol-messenger!\n" );
 
         // Preparing for work
         App app = new App();
@@ -38,9 +39,16 @@ public class Test
         }
 
 
-
-
-
-
+    }
+    private static void printCP2DLogo() {
+        System.out.println("------------------------------------------");
+        System.out.println();
+        System.out.println("  #####   #####     #####        #####");
+        System.out.println(" #        #    #   #     #       #     #");
+        System.out.println(" #        #    #        #   ###  #      # ");
+        System.out.println(" #        #####       #          #     #  ");
+        System.out.println("  #####   #        #######       #####");
+        System.out.println();
+        System.out.println("------------------------------------------");
     }
 }
