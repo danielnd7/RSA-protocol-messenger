@@ -1,8 +1,6 @@
 package RSA_messenger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Server { // Server mock
     private Map<PublicUser, MessagesPair> allUsersMessages;
@@ -12,10 +10,13 @@ public class Server { // Server mock
         allUsersMessages = new HashMap<>();
     }
 
-    private List<PublicUser> usersList;
-    private List<Message> allMessages;
+    private List<PublicUser> usersList; // redundant... the same as allUsersMessages.keySet()
+    private List<Message> allMessages; // redundant... the same as allUsersMessages.get(PublicUser)
 
     // Basic methods
+    public Set<PublicUser> getUsersSet() { // returns a sorted set of users (keys)
+        return new TreeSet<>(allUsersMessages.keySet());
+    }
     public List<PublicUser> getUsersList() {
         return usersList;
     }

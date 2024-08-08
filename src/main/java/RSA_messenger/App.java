@@ -36,13 +36,16 @@ public class App {
 
         addRandomsUsers();
 
+        // Server has a new method getUsersSet which returns a sorted set of users
+        // It's a better option to use the new method, so the redundant lists can be removed from the Server class
+
         if (server.getUsersList().isEmpty()) { // Theres no users, we have to create one
            System.out.println("The contacts list it's empty.");
         } else {
 
             System.out.println("Available contacts: ");
             for (int i = 0; i < server.getUsersList().size(); i++) {
-                System.out.println("(" + i+1 + ")" +  server.getUsersList().get(i));
+                System.out.println("(" + i+1 + ")" +  server.getUsersList().get(i)); // now the PublicUser has a toString :)
             }
             System.out.println("\nSelect one contact: \n");
 
