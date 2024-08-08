@@ -1,5 +1,6 @@
 package RSA_messenger;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ public class Server { // Server mock
 
     // Constructor
     public Server(){
-
+        allUsersMessages = new HashMap<>();
     }
 
     private List<PublicUser> usersList;
@@ -22,5 +23,10 @@ public class Server { // Server mock
         return allMessages;
     }
 
-
+    public Map<PublicUser, MessagesPair> getAllUsersMessages() {
+        return allUsersMessages;
+    }
+    public void setAllUsersMessages(Map<PublicUser, MessagesPair> allUsersMessages) {
+        this.allUsersMessages = allUsersMessages;
+    }
 }
