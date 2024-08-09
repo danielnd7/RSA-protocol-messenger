@@ -39,23 +39,28 @@ public class App {
         // Server has a new method getUsersSet which returns a sorted set of users
         // It's a better option to use the new method, so the redundant lists can be removed from the Server class
 
-        if (server.getUsersList().isEmpty()) { // Theres no users, we have to create one
+        if (server.getUsersSet().isEmpty()) { // Theres no users, we have to create one
            System.out.println("The contacts list it's empty.");
         } else {
 
             System.out.println("Available contacts: ");
-            for (int i = 0; i < server.getUsersList().size(); i++) {
-                System.out.println("(" + i+1 + ")" +  server.getUsersList().get(i)); // now the PublicUser has a toString :)
+            int index = 1;
+            for (PublicUser user : server.getUsersSet()) {
+                System.out.println("(" + index + ")" + user); // now the PublicUser has a toString :)
+                index++;
             }
-            System.out.println("\nSelect one contact: \n");
 
+            System.out.println("\nSelect one contact: \n");
             int contactIndex = 0;
             Scanner readerScanner = new Scanner(System.in);
             if (readerScanner.hasNextInt()) {
                 contactIndex = readerScanner.nextInt() - 1; // We show from 1 to n contacts, so the real index its n-1
             }
-            System.out.println("Type a message for " + nameOfTheReceiver(server.getAllUsersMessages().keySet(), contactIndex));
+            System.out.println("Type a message for " +  nameOfTheReceiver(server.getUsersSet(), contactIndex));
+            // I created nameOfReceiver because i dont find a better way to select an element from the set, cause
+            // we cannot do like this: server.gerUserSet.get(index) because there no index on sets
 
+            // Send messages with scanner (to do)
 
             System.out.println("\nSending messages...\n");
         }
