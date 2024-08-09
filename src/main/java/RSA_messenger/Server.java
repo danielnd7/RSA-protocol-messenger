@@ -3,7 +3,7 @@ package RSA_messenger;
 import java.util.*;
 
 public class Server { // Server mock
-    private Map<PublicUser, MessagesPair> allUsersMessages;
+    private Map<User, MessagesPair> allUsersMessages;
 
     // Constructor
     public Server(){
@@ -11,19 +11,24 @@ public class Server { // Server mock
     }
 
     // Basic methods
-    public Set<PublicUser> getUsersSet() { // returns a sorted set of users (keys)
+    public Set<User> getUsersSet() { // returns a sorted set of users (keys)
         return new TreeSet<>(allUsersMessages.keySet());
     }
-    public Map<PublicUser, MessagesPair> getAllUsersMessages() {
+    public Map<User, MessagesPair> getAllUsersMessages() {
         return allUsersMessages;
     }
-    public void setAllUsersMessages(Map<PublicUser, MessagesPair> allUsersMessages) {
+    public void setAllUsersMessages(Map<User, MessagesPair> allUsersMessages) {
         this.allUsersMessages = allUsersMessages;
     }
-    public void addUser(PublicUser user){
+    public void addUser(User user){
         allUsersMessages.put(user, new MessagesPair());
     }
-    public void removeUser(PublicUser user){
+    public void removeUser(User user){
         allUsersMessages.remove(user);
+    }
+
+    // Testing ONLY method
+    public void printContent(){
+        System.out.println(allUsersMessages);
     }
 }

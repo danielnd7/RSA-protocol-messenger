@@ -1,19 +1,18 @@
 package RSA_messenger;
 
-public class PrivateUser {
-    private String userName;
+public class PrivateUser extends User{
+
+    //protected String userName;
+    //protected KeyPair publicKey;
     private KeyPair privateKey;
 
     // Constructor
-    public PrivateUser(String userName, KeyPair privateKey){
-        this.userName = userName;
+    public PrivateUser(String userName, KeyPair privateKey, KeyPair publicKey) {
+        super(userName, publicKey);
         this.privateKey = privateKey;
     }
 
     // All methods
-    public String getUserName() {
-        return userName;
-    }
     public KeyPair getPrivateKey() {
         return privateKey;
     }

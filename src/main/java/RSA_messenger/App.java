@@ -14,8 +14,8 @@ public class App {
     public App() {
         server = new Server();
         // If the private user its null create a new one
-        createUser();
 
+        createUser();
     }
 
 
@@ -26,6 +26,10 @@ public class App {
     }
     public void loadPrivateUserFromFile(){
         //... In case of absence, calls CreateUser
+    }
+
+    public static Server getServer() {
+        return server;
     }
 
     public void setServer(Server server) {
@@ -44,7 +48,7 @@ public class App {
 
             System.out.println("Available contacts: ");
             int index = 1;
-            for (PublicUser user : server.getUsersSet()) {
+            for (User user : server.getUsersSet()) {
                 System.out.println("(" + index + ")" + user); // now the PublicUser has a toString :)
                 index++;
             }
@@ -66,7 +70,7 @@ public class App {
             if (readerScanner.hasNext()) {
                 textMessage = readerScanner.next();
             }
-            Message message = new Message(receiverName, privateUser.getUserName(),textMessage);
+            Message message = new Message(receiverName, privateUser.getUserName(), textMessage);
 
             System.out.println("\nSending messages...\n");
 
@@ -82,17 +86,30 @@ public class App {
             // this list.
             // Maybe we can create a superclass User class that is extended by 2 subclasses which are privateUser and publicUser
 
+            // ---------- NEW ---------------
+            // Adding the message to the Server's map:
+            // Adding to the sender's messages
+            MessagesPair sendersMessages = server.getAllUsersMessages().get(privateUser); // a MessagePair of a user who sends the message
+            sendersMessages.getSentMessages().add(message);
+            // Adding to the recipient's messages
+            User recipient = new User(receiverName, new KeyPair(5, 5)); // Only matters the NAME
+            MessagesPair recipientMessages = server.getAllUsersMessages().get(recipient);
+            recipientMessages.getReceivedMessages().add(message);
+
+
+
+
             System.out.println("\nThe message has been sent succesfully!\n");
         }
     }
 
-    private PublicUser publicUserOfTheReceiver(Set<PublicUser> usersSet, int contactIndex) {
+    private User publicUserOfTheReceiver(Set<User> usersSet, int contactIndex) {
         Iterator iterator = usersSet.iterator();
-        PublicUser userRes = (PublicUser) iterator.next();
+        User userRes = (User) iterator.next();
         int index = 0;
 
         while (index != contactIndex) {
-            userRes = (PublicUser) iterator.next();
+            userRes = (User) iterator.next();
             index++;
         }
         return  userRes;
@@ -110,24 +127,27 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         if (scanner.hasNext()) {
             Random random = new Random();
-            privateUser = new PrivateUser(scanner.next(),new KeyPair(random.nextInt(), random.nextInt()));
+            privateUser = new PrivateUser(scanner.next(),
+                    new KeyPair(random.nextInt(), random.nextInt()),
+                    new KeyPair(random.nextInt(), random.nextInt()));
         }
     }
 
     // Not real methods, just to test the program
-    private static void addRandomsUsers() {
-        server.addUser(new PublicUser("Lucas", new KeyPair(2,5)));
-        server.addUser(new PublicUser("Danichelo", new KeyPair(1,6)));
-        server.addUser(new PublicUser("Tolo", new KeyPair(5,6)));
+    // made public and not static for testing
+    public static void addRandomsUsers() {
+        server.addUser(new User("Lucas", new KeyPair(2,5)));
+        server.addUser(new User("Danichelo", new KeyPair(1,6)));
+        server.addUser(new User("Tolo", new KeyPair(5,6)));
     }
 
-    private String nameOfTheReceiver(Set<PublicUser> publicUsers, int contactIndex) {
-        Iterator iterator = publicUsers.iterator();
-        PublicUser userRes = (PublicUser) iterator.next();
+    private String nameOfTheReceiver(Set<User> users, int contactIndex) {
+        Iterator iterator = users.iterator();
+        User userRes = (User) iterator.next();
         int index = 0;
 
         while (index != contactIndex) {
-            userRes = (PublicUser) iterator.next();
+            userRes = (User) iterator.next();
             index++;
         }
         return  userRes.getUserName();

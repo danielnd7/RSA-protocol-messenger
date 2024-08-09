@@ -26,4 +26,11 @@ public class MessagesPair {
     public void setSentMessages(List<Message> sentMessages) {
         this.sentMessages = sentMessages;
     }
+
+    // Testing ONLY method
+    @Override
+    public String toString() {
+        return "reseived: " + receivedMessages + " ; sent: " + sentMessages + ". ";
+    }
+
 }

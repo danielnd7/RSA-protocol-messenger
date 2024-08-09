@@ -28,7 +28,7 @@ class ServerTest {
     @Test
     void givenAUserThenAddedCorrectly(){
         // Arrange
-        PublicUser user1 = new PublicUser("Lucas", new KeyPair(2,5));
+        User user1 = new User("Lucas", new KeyPair(2,5));
 
         // Act
         server.addUser(user1);
@@ -41,10 +41,10 @@ class ServerTest {
     @Test
     void givenTwoUsersWhenTryToGetUsersSetThenReturnsCorrectly(){
         // Arrange
-        PublicUser user1 = new PublicUser("Lucas", new KeyPair(2,5));
-        PublicUser user2 = new PublicUser("Danichelo", new KeyPair(1,6));
+        User user1 = new User("Lucas", new KeyPair(2,5));
+        User user2 = new User("Danichelo", new KeyPair(1,6));
 
-        Set<PublicUser> resultSet = new TreeSet<>();
+        Set<User> resultSet = new TreeSet<>();
         resultSet.add(user1);
         resultSet.add(user2);
 
@@ -60,15 +60,15 @@ class ServerTest {
     @Test
     void givenTwoUsersWhenTryToGetUsersSetThenReturnsCorrectlySortedSet(){
         // Arrange
-        PublicUser user1 = new PublicUser("Lucas", new KeyPair(2,5));
-        PublicUser user2 = new PublicUser("Danichelo", new KeyPair(1,6));
+        User user1 = new User("Lucas", new KeyPair(2,5));
+        User user2 = new User("Danichelo", new KeyPair(1,6));
 
         // Act
         server.addUser(user1);
         server.addUser(user2);
 
-        SortedSet<PublicUser> usersSet = (SortedSet<PublicUser>) server.getUsersSet();
-        PublicUser dani = usersSet.first();
+        SortedSet<User> usersSet = (SortedSet<User>) server.getUsersSet();
+        User dani = usersSet.first();
 
         // Assert
         assertEquals("DANICHELO", dani.getUserName());
@@ -84,7 +84,7 @@ class ServerTest {
     @Test
     void givenAServerWithOneUserWhenRemoveItThenServerItsEmpty(){
         // Arrange
-        PublicUser user = new PublicUser("Lucas", new KeyPair(2,2));
+        User user = new User("Lucas", new KeyPair(2,2));
 
         // Act
         server.addUser(user);
