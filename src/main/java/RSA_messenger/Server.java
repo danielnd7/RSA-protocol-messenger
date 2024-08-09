@@ -30,4 +30,7 @@ public class Server { // Server mock
     public void setAllUsersMessages(Map<PublicUser, MessagesPair> allUsersMessages) {
         this.allUsersMessages = allUsersMessages;
     }
+    public void addUser(PublicUser user){
+        allUsersMessages.put(user, new MessagesPair());
+    }
 }
