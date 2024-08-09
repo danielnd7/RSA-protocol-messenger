@@ -1,9 +1,7 @@
 package RSA_messenger;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
+import java.util.random.*; // Provisional
 
 public class App {
     // Instance variables
@@ -15,7 +13,11 @@ public class App {
     // Constructor
     public App() {
         Server server = new Server();
-        createUser();
+
+        // If the private user its null create a new one
+        if (privateUser.getUserName().equals(null)) {
+            createUser();
+        }
     }
 
 
@@ -56,16 +58,24 @@ public class App {
             if (readerScanner.hasNextInt()) {
                 contactIndex = readerScanner.nextInt() - 1; // We show from 1 to n contacts, so the real index its n-1
             }
-            System.out.println("Type a message for " +  nameOfTheReceiver(server.getUsersSet(), contactIndex));
+            String receiverName = nameOfTheReceiver(server.getUsersSet(), contactIndex);
+            System.out.println("\nType a message for " +  receiverName + " : \n");
             // I created nameOfReceiver because i dont find a better way to select an element from the set, cause
             // we cannot do like this: server.gerUserSet.get(index) because there no index on sets
 
             // Send messages with scanner (to do)
+            readerScanner = new Scanner(System.in);
+            String textMessage = null;
+            if (readerScanner.hasNext()) {
+                textMessage = readerScanner.next();
+            }
+            Message message = new Message(receiverName, privateUser.getUserName(),textMessage);
 
             System.out.println("\nSending messages...\n");
+
+            // Need to establish the message, put in the map the receiver and the message in his arraylist of received messages
+            // And put in the map the sender and his sent message on his arraylist of sent messages
         }
-
-
     }
 
     public void read(){
@@ -75,7 +85,12 @@ public class App {
 
     // Auxiliary methods
     public void createUser(){
-
+        System.out.println("\nType your user name: \n");
+        Scanner scanner = new Scanner(System.in);
+        if (scanner.hasNext()) {
+            Random random = new Random();
+            privateUser = new PrivateUser(scanner.next(),new KeyPair(random.nextInt(), random.nextInt()));
+        }
     }
 
     // Not real methods, just to test the program
