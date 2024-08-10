@@ -84,18 +84,6 @@ public class App {
         }
     }
 
-    private User publicUserOfTheReceiver(Set<User> usersSet, int contactIndex) {
-        Iterator iterator = usersSet.iterator();
-        User userRes = (User) iterator.next();
-        int index = 0;
-
-        while (index != contactIndex) {
-            userRes = (User) iterator.next();
-            index++;
-        }
-        return  userRes;
-    }
-
     public void read(){
         System.out.println("\nReading messages...\n");
 
@@ -122,15 +110,4 @@ public class App {
         server.addUser(new User("Tolo", new KeyPair(5,6)));
     }
 
-    private String nameOfTheReceiver(Set<User> users, int contactIndex) {
-        Iterator iterator = users.iterator();
-        User userRes = (User) iterator.next();
-        int index = 0;
-
-        while (index != contactIndex) {
-            userRes = (User) iterator.next();
-            index++;
-        }
-        return  userRes.getUserName();
-    }
 }
