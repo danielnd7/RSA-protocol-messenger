@@ -19,4 +19,9 @@ public class Message {
         this.from = from;
         this.text = text;
     }
+
+    @Override
+    public String toString() {
+        return text;
+    }
 }
