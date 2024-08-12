@@ -13,6 +13,7 @@ public class TestPrintServer {
         App.getServer().printContent();
 
         app.send();
+        app.read();
 
         App.getServer().printContent();
 
