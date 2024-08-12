@@ -20,7 +20,7 @@ public class Test
 
         while (selectedOption != 3){
 
-            System.out.println("What would you like to do?");
+            System.out.println("\nWhat would you like to do?");
             System.out.println("(1) Read your messages");
             System.out.println("(2) Write a new message");
             System.out.println("(3) Finish");

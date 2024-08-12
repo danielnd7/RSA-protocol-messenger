@@ -89,16 +89,46 @@ public class App {
 
     // To do
     public void read(){
+        List<Message> receivedMessages = new ArrayList<>(server.getAllUsersMessages().get(privateUser).getUncheckedReceivedMessages());
+
         System.out.println("\nSearching for messages...");
 
-        if (server.getAllUsersMessages().get(privateUser).getReceivedMessages().isEmpty()) {
-            System.out.println("\nThere's no new messages...");
-        } else {
-            //System.out.println("\n You have " + countNewMessages() + " new messages!");
+        // Testing
+        // System.out.println("\n " + receivedMessages + " \n");
+
+        if (receivedMessages.isEmpty()) {
+            System.out.println("\nThere's no new messages...\n");
+
+            //Check for old messages (to do)
+
+            System.out.println("Do you want to read old messages?");
+            System.out.println("(1) YES");
+            System.out.println("(2) NO");
+
+            Scanner input = new Scanner(System.in);
+            int selection = input.nextInt();
+            if (selection < 1 || selection > 2) {
+                throw new RSAMessengerException("Invalid input: just (1) YES or (2) NO");
+            } else {
+                if (selection == 1) {
+                    for (Message message : server.getAllUsersMessages().get(privateUser).getReceivedMessages()) {
+                        System.out.println("\n- From " + message.getFrom() +  ": ");
+                        System.out.println(message +  "\n");
+                    }
+                }
+            }
+        }
+        // Check for new messages
+        else {
+
+            if (countNewMessages(receivedMessages) == 1) {
+                System.out.println("\nYou have " + countNewMessages(receivedMessages) + " new message!");
+            } else if (countNewMessages(receivedMessages) > 1){
+                System.out.println("\nYou have " + countNewMessages(receivedMessages) + " new messages!");
+            }
             System.out.println("\nSelect one contact: ");
 
             // Show the list
-            List<Message> receivedMessages = new ArrayList<>(server.getAllUsersMessages().get(privateUser).getUncheckedReceivedMessages());
             for (int i = 0; i < receivedMessages.size(); i++) {
                 System.out.println("(" + (i + 1) + ") " + receivedMessages.get(i).getFrom());
             }
@@ -129,6 +159,10 @@ public class App {
             // I think it is optional
             //server.getAllUsersMessages().get()
         }
+    }
+
+    private int countNewMessages(List<Message> receivedMessages) {
+        return receivedMessages.size();
     }
 
     // Auxiliary methods
