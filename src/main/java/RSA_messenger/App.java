@@ -14,7 +14,6 @@ public class App {
     public App() {
         server = new Server();
         // If the private user its null create a new one
-
         createUser();
     }
 
@@ -57,7 +56,12 @@ public class App {
             User receivingUser = null;
             Scanner readerScanner = new Scanner(System.in);
             if (readerScanner.hasNextInt()){
-                receivingUser = usersList.get(readerScanner.nextInt() - 1); // We show from 1 to n contacts, so the real index its n-1
+                int selectedIndex = readerScanner.nextInt();
+                if (selectedIndex - 1 < 0 ||  selectedIndex - 1 > server.getUsersSet().size()) {
+                    throw  new RSAMessengerException("Invalid index: " + (selectedIndex - 1));
+                }
+
+                receivingUser = usersList.get(selectedIndex - 1); // We show from 1 to n contacts, so the real index its n-1
             }
 
             System.out.println("\nType a message for " +  receivingUser + " : ");
@@ -65,8 +69,8 @@ public class App {
             // Reading typed messages with readerScanner
             readerScanner = new Scanner(System.in);
             String textMessage = null;
-            if (readerScanner.hasNext()) {
-                textMessage = readerScanner.next();
+            if (readerScanner.hasNextLine()) {
+                textMessage = readerScanner.nextLine();
             }
 
             Message message = new Message(receivingUser.getUserName(), privateUser.getUserName(), textMessage);
@@ -94,9 +98,9 @@ public class App {
         System.out.println("\nLets create your private user...\n");
         System.out.println("Type your user name: ");
         Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNext()) {
+        if (scanner.hasNextLine()) {
             Random random = new Random();
-            privateUser = new PrivateUser(scanner.next(),
+            privateUser = new PrivateUser(scanner.nextLine(),
                     new KeyPair(random.nextInt(), random.nextInt()),
                     new KeyPair(random.nextInt(), random.nextInt()));
         }
