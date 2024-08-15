@@ -9,6 +9,9 @@ public class KeyPair {
         this.module = module;
         this.key = key;
     }
+    public KeyPair(){
+        this(0,0);
+    }
     // All methods
     public int getModule() {
         return module;

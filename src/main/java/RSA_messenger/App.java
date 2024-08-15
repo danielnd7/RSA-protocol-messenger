@@ -15,7 +15,7 @@ public class App {
         server = new Server();
         // If the private user its null create a new one
 
-        createUser();
+        //createUser();
     }
 
 
@@ -41,7 +41,7 @@ public class App {
 
 
         if (server.getUsersSet().isEmpty()) { // Theres no users, we have to create one
-           System.out.println("The contacts list it's empty.");
+            System.out.println("The contacts list it's empty.");
         } else {
 
             System.out.println("Available contacts: ");
@@ -89,8 +89,41 @@ public class App {
 
     }
 
-    // Auxiliary methods
     public void createUser(){
+        String newUserName = null;
+        System.out.println("\nLets create your private user...\n");
+
+        boolean uniqueName = false;
+
+        while (!uniqueName){
+            System.out.println("Enter your user name: ");
+
+            Scanner scanner = new Scanner(System.in);
+            if (scanner.hasNext()){
+                newUserName = scanner.next();
+            }
+
+            // Checking if there is already a user with the same name:
+            if (server.getAllUsersMessages().keySet().contains(new User(newUserName, new KeyPair()))){
+                System.out.println("This name is already taken, please enter another one: ");
+            } else {
+                uniqueName = true;
+            }
+        }
+
+        System.out.println("\nCreating a new user...\n");
+        // Keys calculating here....
+
+        // It's necessary to create two different user to prevent the private key from being uploaded to the server.
+        privateUser = new PrivateUser(newUserName, new KeyPair(), new KeyPair());
+        server.addUser(new User(newUserName, new KeyPair()));
+
+        System.out.println("The new user was created successfully.\n");
+
+    }
+
+    // Auxiliary methods
+    public void createUserDemo(){ // Testing ONLY method
         System.out.println("\nLets create your private user...\n");
         System.out.println("Type your user name: ");
         Scanner scanner = new Scanner(System.in);

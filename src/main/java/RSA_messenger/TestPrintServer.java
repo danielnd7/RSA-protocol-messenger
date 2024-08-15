@@ -12,6 +12,8 @@ public class TestPrintServer {
 
         App.getServer().printContent();
 
+        app.createUser();
+
         app.send();
 
         App.getServer().printContent();
