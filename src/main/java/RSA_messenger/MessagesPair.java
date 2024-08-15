@@ -27,6 +27,31 @@ public class MessagesPair {
         return receivedMessages;
     }
 
+    public List<Message> getUncheckedReceivedMessages() {
+        List<Message> auxList = new ArrayList<>();
+
+        for (Message message : receivedMessages) {
+            if (!message.isChecked()) {
+                auxList.add(message);
+            }
+        }
+        return auxList;
+    }
+
+    public void updateReceivedMessages(int selectedIndex) {
+        Message messageToCheck = getUncheckedReceivedMessages().get(selectedIndex);
+        boolean checked = false;
+        int index = 0;
+
+        while(index < receivedMessages.size() && !checked) {
+            if (receivedMessages.get(index).equals(messageToCheck)) {
+                receivedMessages.get(index).setChecked(true);
+                checked = true;
+            }
+            index++;
+        }
+    }
+
     public List<Message> getSentMessages() {
         return sentMessages;
     }
@@ -34,7 +59,7 @@ public class MessagesPair {
     // Testing ONLY method
     @Override
     public String toString() {
-        return "reseived: " + receivedMessages + " ; sent: " + sentMessages + ". ";
+        return "received: " + receivedMessages + " ; sent: " + sentMessages + ". ";
     }
 
 }

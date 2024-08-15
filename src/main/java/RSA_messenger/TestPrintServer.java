@@ -15,6 +15,7 @@ public class TestPrintServer {
         app.createUser();
 
         app.send();
+        app.read();
 
         App.getServer().printContent();
 

@@ -57,7 +57,11 @@ public class App {
             User receivingUser = null;
             Scanner readerScanner = new Scanner(System.in);
             if (readerScanner.hasNextInt()){
-                receivingUser = usersList.get(readerScanner.nextInt() - 1); // We show from 1 to n contacts, so the real index its n-1
+                int selectedIndex = readerScanner.nextInt() - 1;
+                if (selectedIndex  < 0 ||  selectedIndex > server.getUsersSet().size()) {
+                    throw  new RSAMessengerException("Invalid index: " + selectedIndex);
+                }
+                receivingUser = usersList.get(selectedIndex);
             }
 
             System.out.println("\nType a message for " +  receivingUser + " : ");
@@ -65,8 +69,8 @@ public class App {
             // Reading typed messages with readerScanner
             readerScanner = new Scanner(System.in);
             String textMessage = null;
-            if (readerScanner.hasNext()) {
-                textMessage = readerScanner.next();
+            if (readerScanner.hasNextLine()) {
+                textMessage = readerScanner.nextLine();
             }
 
             Message message = new Message(receivingUser.getUserName(), privateUser.getUserName(), textMessage);
@@ -84,9 +88,82 @@ public class App {
         }
     }
 
+    // To do
     public void read(){
-        System.out.println("\nReading messages...\n");
+        List<Message> receivedMessages = new ArrayList<>(server.getAllUsersMessages().get(privateUser).getUncheckedReceivedMessages());
 
+        System.out.println("\nSearching for messages...");
+
+        // Testing
+        // System.out.println("\n " + receivedMessages + " \n");
+
+        if (receivedMessages.isEmpty()) {
+            System.out.println("\nThere's no new messages...\n");
+
+            //Check for old messages (to do)
+
+            System.out.println("Do you want to read old messages?");
+            System.out.println("(1) YES");
+            System.out.println("(2) NO");
+
+            Scanner input = new Scanner(System.in);
+            int selection = input.nextInt();
+            if (selection < 1 || selection > 2) {
+                throw new RSAMessengerException("Invalid input: just (1) YES or (2) NO");
+            } else {
+                if (selection == 1) {
+                    for (Message message : server.getAllUsersMessages().get(privateUser).getReceivedMessages()) {
+                        System.out.println("\n- From " + message.getFrom() +  ": ");
+                        System.out.println(message +  "\n");
+                    }
+                }
+            }
+        }
+        // Check for new messages
+        else {
+
+            if (countNewMessages(receivedMessages) == 1) {
+                System.out.println("\nYou have " + countNewMessages(receivedMessages) + " new message!");
+            } else if (countNewMessages(receivedMessages) > 1){
+                System.out.println("\nYou have " + countNewMessages(receivedMessages) + " new messages!");
+            }
+            System.out.println("\nSelect one contact: ");
+
+            // Show the list
+            for (int i = 0; i < receivedMessages.size(); i++) {
+                System.out.println("(" + (i + 1) + ") " + receivedMessages.get(i).getFrom());
+            }
+
+            // Select one contact
+            Scanner readerScanner = new Scanner(System.in);
+            String receivedMessageText = null;
+            Message receivedMessageCore = null;
+            int selectedIndex = 0;
+            if (readerScanner.hasNextInt()) {
+                selectedIndex = readerScanner.nextInt() - 1;
+                if (selectedIndex  < 0 ||  selectedIndex > receivedMessages.size()) {
+                    throw  new RSAMessengerException("Invalid index: " + selectedIndex);
+                }
+                receivedMessageText = receivedMessages.get(selectedIndex).toString();
+                receivedMessageCore = receivedMessages.get(selectedIndex);
+            }
+
+            // Read the message and remove it from the received messages list
+            System.out.println("\nThe message received from " + receivedMessageCore.getFrom() +  " is: ");
+            System.out.println(receivedMessageText);
+
+            // Update the status of the message (unchecked to checked)
+            // Update the status of the real received message list
+            server.getAllUsersMessages().get(privateUser).updateReceivedMessages(selectedIndex);
+
+            // This last line is for checking the sent message (from de public user that sent the message to us)
+            // I think it is optional
+            //server.getAllUsersMessages().get()
+        }
+    }
+
+    private int countNewMessages(List<Message> receivedMessages) {
+        return receivedMessages.size();
     }
 
     public void createUser(){
@@ -127,9 +204,9 @@ public class App {
         System.out.println("\nLets create your private user...\n");
         System.out.println("Type your user name: ");
         Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNext()) {
+        if (scanner.hasNextLine()) {
             Random random = new Random();
-            privateUser = new PrivateUser(scanner.next(),
+            privateUser = new PrivateUser(scanner.nextLine(),
                     new KeyPair(random.nextInt(), random.nextInt()),
                     new KeyPair(random.nextInt(), random.nextInt()));
         }
