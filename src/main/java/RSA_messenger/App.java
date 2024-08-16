@@ -14,8 +14,7 @@ public class App {
     public App() {
         server = new Server();
         // If the private user its null create a new one
-
-        //createUser();
+        createUser();
     }
 
 
@@ -111,7 +110,9 @@ public class App {
             if (selection < 1 || selection > 2) {
                 throw new RSAMessengerException("Invalid input: just (1) YES or (2) NO");
             } else {
-                if (selection == 1) {
+                if (selection == 1 && server.getAllUsersMessages().get(privateUser).getReceivedMessages().isEmpty()) {
+                    System.out.println("\nThere's no old messages...\n");
+                } else if (selection == 1) {
                     for (Message message : server.getAllUsersMessages().get(privateUser).getReceivedMessages()) {
                         System.out.println("\n- From " + message.getFrom() +  ": ");
                         System.out.println(message +  "\n");
