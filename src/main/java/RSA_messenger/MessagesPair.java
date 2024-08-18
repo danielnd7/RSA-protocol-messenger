@@ -7,10 +7,6 @@ public class MessagesPair {
     private List<Message> receivedMessages;
     private List<Message> sentMessages;
 
-    // The methods setReceivedMessages and setSentMessages (both have been removed) seem to be unnecessary
-    // because we can add or remove messages returned by get...Messages()
-    // But the easiest way is to use add...Message
-
     public void addReceivedMessage(Message message){
         receivedMessages.add(message);
     }
