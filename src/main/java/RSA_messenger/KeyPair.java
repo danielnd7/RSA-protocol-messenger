@@ -10,7 +10,7 @@ public class KeyPair {
         this.key = key;
     }
     public KeyPair(){
-        this(0,0);
+        this(1234,2222);
     }
     // All methods
     public int getModule() {

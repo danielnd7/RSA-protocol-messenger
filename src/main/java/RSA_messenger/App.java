@@ -1,5 +1,6 @@
 package RSA_messenger;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -14,7 +15,21 @@ public class App {
     public App() {
         server = new Server();
         // If the private user its null create a new one
-        createUser();
+        addRandomsUsers(); // Testing ONLY
+
+        try {
+            privateUser = PrivateUser.loadFromFile();
+
+            System.out.println("Wellcome, " + privateUser.getUserName() + "!");
+
+        } catch (IOException e) {
+            System.out.println("No existing user was found.");
+            createUser();
+        } catch (RSAMessengerException e) {
+            System.out.println("The user data found is incorrect.");
+            createUser();
+        }
+
     }
 
 
@@ -25,6 +40,7 @@ public class App {
     }
     public void loadPrivateUserFromFile(){
         //... In case of absence, calls CreateUser
+        //privateUser.loadFromFile();
     }
 
     public static Server getServer() {
@@ -36,8 +52,8 @@ public class App {
     }
 
     public void send(){
-        addRandomsUsers(); // Testing ONLY
-
+        //addRandomsUsers(); // Testing ONLY
+        // moved to the constructor
 
         if (server.getUsersSet().isEmpty()) { // Theres no users, we have to create one
             System.out.println("The contacts list it's empty.");
@@ -87,16 +103,17 @@ public class App {
         }
     }
 
-    // To do
+
     public void read(){
-        List<Message> receivedMessages = new ArrayList<>(server.getAllUsersMessages().get(privateUser).getUncheckedReceivedMessages());
+        // now there is no new list created, so the returned one is used directly
+        List<Message> uncheckedMessages = server.getAllUsersMessages().get(privateUser).getUncheckedReceivedMessages();
 
         System.out.println("\nSearching for messages...");
 
         // Testing
-        // System.out.println("\n " + receivedMessages + " \n");
+        // System.out.println("\n " + uncheckedMessages + " \n");
 
-        if (receivedMessages.isEmpty()) {
+        if (uncheckedMessages.isEmpty()) {
             System.out.println("\nThere's no new messages...\n");
 
             //Check for old messages (to do)
@@ -109,53 +126,58 @@ public class App {
             int selection = input.nextInt();
             if (selection < 1 || selection > 2) {
                 throw new RSAMessengerException("Invalid input: just (1) YES or (2) NO");
-            } else {
-                if (selection == 1 && server.getAllUsersMessages().get(privateUser).getReceivedMessages().isEmpty()) {
-                    System.out.println("\nThere's no old messages...\n");
-                } else if (selection == 1) {
-                    for (Message message : server.getAllUsersMessages().get(privateUser).getReceivedMessages()) {
-                        System.out.println("\n- From " + message.getFrom() +  ": ");
-                        System.out.println(message +  "\n");
-                    }
+            }
+            if (selection == 1 && server.getAllUsersMessages().get(privateUser).getReceivedMessages().isEmpty()) {
+                System.out.println("\nThere's no old messages...\n");
+            } else if (selection == 1) {
+                for (Message message : server.getAllUsersMessages().get(privateUser).getReceivedMessages()) {
+                    System.out.println("\n- From " + message.getFrom() +  ": ");
+                    System.out.println(message +  "\n");
                 }
             }
-        }
-        // Check for new messages
-        else {
 
-            if (countNewMessages(receivedMessages) == 1) {
-                System.out.println("\nYou have " + countNewMessages(receivedMessages) + " new message!");
-            } else if (countNewMessages(receivedMessages) > 1){
-                System.out.println("\nYou have " + countNewMessages(receivedMessages) + " new messages!");
+        } else {   // Check for new messages
+
+            int numberReceivedMessages = uncheckedMessages.size();
+            if (numberReceivedMessages == 1){
+                System.out.println("\nYou have one new message!");
+            } else {
+                System.out.println("\nYou have " + numberReceivedMessages + " new messages!");
             }
             System.out.println("\nSelect one contact: ");
 
             // Show the list
-            for (int i = 0; i < receivedMessages.size(); i++) {
-                System.out.println("(" + (i + 1) + ") " + receivedMessages.get(i).getFrom());
+            for (int i = 0; i < uncheckedMessages.size(); i++) {
+                System.out.println("(" + (i + 1) + ") " + uncheckedMessages.get(i).getFrom());
             }
 
             // Select one contact
             Scanner readerScanner = new Scanner(System.in);
-            String receivedMessageText = null;
-            Message receivedMessageCore = null;
+            Message receivedMessage = null;
             int selectedIndex = 0;
             if (readerScanner.hasNextInt()) {
                 selectedIndex = readerScanner.nextInt() - 1;
-                if (selectedIndex  < 0 ||  selectedIndex > receivedMessages.size()) {
+                if (selectedIndex  < 0 ||  selectedIndex > uncheckedMessages.size()) {
                     throw  new RSAMessengerException("Invalid index: " + selectedIndex);
                 }
-                receivedMessageText = receivedMessages.get(selectedIndex).toString();
-                receivedMessageCore = receivedMessages.get(selectedIndex);
+                receivedMessage = uncheckedMessages.get(selectedIndex);
             }
 
             // Read the message and remove it from the received messages list
-            System.out.println("\nThe message received from " + receivedMessageCore.getFrom() +  " is: ");
-            System.out.println(receivedMessageText);
+            System.out.println("\nThe message received from " + receivedMessage.getFrom() +  " is: ");
+            System.out.println(receivedMessage);
+
 
             // Update the status of the message (unchecked to checked)
+            receivedMessage.setChecked(true);
+            // NEW: I guess it's enough to set checked only here because it's a reference to the original message so
+            // it will change everywhere (in all the lists..)
+            // I'm not sure it that's exactly what you did with updateReceivedMessages, but it seems to work this way...
+
+
             // Update the status of the real received message list
-            server.getAllUsersMessages().get(privateUser).updateReceivedMessages(selectedIndex);
+
+            //server.getAllUsersMessages().get(privateUser).updateReceivedMessages(selectedIndex);
 
             // This last line is for checking the sent message (from de public user that sent the message to us)
             // I think it is optional
@@ -163,13 +185,14 @@ public class App {
         }
     }
 
+    // I guess it will be easier to do it directly (line 126):
     private int countNewMessages(List<Message> receivedMessages) {
         return receivedMessages.size();
     }
 
     public void createUser(){
         String newUserName = null;
-        System.out.println("\nLets create your private user...\n");
+        System.out.println("\nLets create your new private user...\n");
 
         boolean uniqueName = false;
 
@@ -197,6 +220,9 @@ public class App {
         server.addUser(new User(newUserName, new KeyPair()));
 
         System.out.println("The new user was created successfully.\n");
+
+
+        privateUser.storeInFile();
 
     }
 
