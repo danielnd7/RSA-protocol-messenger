@@ -8,14 +8,12 @@ public class Test
     {
         int selectedOption = 0;
         printCP2DLogo();
-        System.out.println( "\nWelcome to RSA-protocol-messenger!\n" );
+        System.out.println( "----------RSA-protocol-messenger----------\n" );
 
         // Preparing for work
         App app = new App();
         app.loadServerFromFile();
-        app.loadPrivateUserFromFile();
-
-        // while
+        //app.loadPrivateUserFromFile();
 
 
         while (selectedOption != 3){

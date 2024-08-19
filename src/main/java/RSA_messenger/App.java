@@ -1,5 +1,6 @@
 package RSA_messenger;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -15,7 +16,20 @@ public class App {
         server = new Server();
         // If the private user its null create a new one
         addRandomsUsers(); // Testing ONLY
-        createUser();
+
+        try {
+            privateUser = PrivateUser.loadFromFile();
+
+            System.out.println("Wellcome, " + privateUser.getUserName() + "!");
+
+        } catch (IOException e) {
+            System.out.println("No existing user was found.");
+            createUser();
+        } catch (RSAMessengerException e) {
+            System.out.println("The user data found is incorrect.");
+            createUser();
+        }
+
     }
 
 
@@ -26,6 +40,7 @@ public class App {
     }
     public void loadPrivateUserFromFile(){
         //... In case of absence, calls CreateUser
+        //privateUser.loadFromFile();
     }
 
     public static Server getServer() {
@@ -177,7 +192,7 @@ public class App {
 
     public void createUser(){
         String newUserName = null;
-        System.out.println("\nLets create your private user...\n");
+        System.out.println("\nLets create your new private user...\n");
 
         boolean uniqueName = false;
 
@@ -205,6 +220,9 @@ public class App {
         server.addUser(new User(newUserName, new KeyPair()));
 
         System.out.println("The new user was created successfully.\n");
+
+
+        privateUser.storeInFile();
 
     }
 
