@@ -1,8 +1,9 @@
 package RSA_messenger;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class User implements Comparable<User> {
+public class User implements Comparable<User>, Serializable {
      public String userName;
      public KeyPair publicKey;
 

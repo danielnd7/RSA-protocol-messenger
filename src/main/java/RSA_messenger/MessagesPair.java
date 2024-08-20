@@ -1,9 +1,10 @@
 package RSA_messenger;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessagesPair {
+public class MessagesPair implements Serializable {
     private List<Message> receivedMessages;
     private List<Message> sentMessages;
 

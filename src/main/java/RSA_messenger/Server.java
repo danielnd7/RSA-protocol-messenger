@@ -1,8 +1,9 @@
 package RSA_messenger;
 
+import java.io.*;
 import java.util.*;
 
-public class Server { // Server mock
+public class Server implements Serializable { // Server mock
     private Map<User, MessagesPair> allUsersMessages;
 
     // Constructor
@@ -30,5 +31,41 @@ public class Server { // Server mock
     // Testing ONLY method
     public void printContent(){
         System.out.println(allUsersMessages);
+    }
+
+    public void serializeServer() {
+        try (FileOutputStream fileOutput = new FileOutputStream("server.ser");
+             ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput)){
+
+            objectOutput.writeObject(this);
+
+            System.out.println("Serialized data is saved in server.ser (TESTING OUTPUT)\n");
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RSAMessengerException("Error: server data file couldn't be written\n");
+        }
+    }
+
+
+    public static Server deserializeServer(){
+        Server server = null;
+
+        try (FileInputStream fileInput = new FileInputStream("server.ser");
+             ObjectInputStream objectInput = new ObjectInputStream(fileInput)){
+
+            server = (Server) objectInput.readObject();
+
+            System.out.println("Server was deserialized from server.ser (TESTING OUTPUT)\n");
+
+        } catch (IOException e) {
+            throw new RSAMessengerException("Server data file couldn't be loaded :(\n");
+        } catch (ClassNotFoundException c) {
+            throw new RSAMessengerException("Server data file not found :(\n");
+        }
+
+
+        return server;
     }
 }

@@ -1,5 +1,6 @@
 package RSA_messenger;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Test
@@ -11,8 +12,10 @@ public class Test
         System.out.println( "----------RSA-protocol-messenger----------\n" );
 
         // Preparing for work
+
         App app = new App();
-        app.loadServerFromFile();
+
+        //app.loadServerFromFile();
         //app.loadPrivateUserFromFile();
 
 

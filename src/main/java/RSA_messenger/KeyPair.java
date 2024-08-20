@@ -1,6 +1,8 @@
 package RSA_messenger;
 
-public class KeyPair {
+import java.io.Serializable;
+
+public class KeyPair implements Serializable {
     private int module;
     private int key;
 

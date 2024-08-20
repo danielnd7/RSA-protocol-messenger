@@ -1,6 +1,8 @@
 package RSA_messenger;
 
-public class Message {
+import java.io.Serializable;
+
+public class Message implements Serializable {
     private String to; // the Sender's userName
     private String from; // the recipient's userName
     private String text; // the text of the message

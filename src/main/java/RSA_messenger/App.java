@@ -13,10 +13,19 @@ public class App {
 
     // Constructor
     public App() {
-        server = new Server();
-        // If the private user its null create a new one
-        addRandomsUsers(); // Testing ONLY
+        //server = new Server();
+        try {
+            server = Server.deserializeServer();
 
+            System.out.println("Server was loaded successfully\n");
+
+        } catch (RSAMessengerException e){
+            System.out.println(e.getMessage());
+            createServer();
+        }
+        //addRandomsUsers(); // Testing ONLY
+
+        // If the private user doesn't exist create a new one
         try {
             privateUser = PrivateUser.loadFromFile();
 
@@ -26,10 +35,17 @@ public class App {
             System.out.println("No existing user was found.");
             createUser();
         } catch (RSAMessengerException e) {
-            System.out.println("The user data found is incorrect.");
+            System.out.println(e.getMessage());
             createUser();
         }
 
+    }
+
+    private void createServer() {
+        server = new Server();
+        System.out.println("\nNew server created successfully!\n");
+        addRandomsUsers();
+        server.serializeServer(); // Update a server data file
     }
 
 
@@ -51,9 +67,7 @@ public class App {
         this.server = server;
     }
 
-    public void send(){
-        //addRandomsUsers(); // Testing ONLY
-        // moved to the constructor
+    public void send() {
 
         if (server.getUsersSet().isEmpty()) { // Theres no users, we have to create one
             System.out.println("The contacts list it's empty.");
@@ -99,12 +113,14 @@ public class App {
             server.getAllUsersMessages().get(receivingUser).addReceivedMessage(message);
 
 
+            server.serializeServer(); // Update a server data file
+
             System.out.println("\nThe message has been sent succesfully!\n");
         }
     }
 
 
-    public void read(){
+    public void read() {
         // now there is no new list created, so the returned one is used directly
         List<Message> uncheckedMessages = server.getAllUsersMessages().get(privateUser).getUncheckedReceivedMessages();
 
@@ -170,29 +186,17 @@ public class App {
 
             // Update the status of the message (unchecked to checked)
             receivedMessage.setChecked(true);
-            // NEW: I guess it's enough to set checked only here because it's a reference to the original message so
-            // it will change everywhere (in all the lists..)
-            // I'm not sure it that's exactly what you did with updateReceivedMessages, but it seems to work this way...
 
+            server.serializeServer(); // Update a server data file
 
-            // Update the status of the real received message list
-
-            //server.getAllUsersMessages().get(privateUser).updateReceivedMessages(selectedIndex);
-
-            // This last line is for checking the sent message (from de public user that sent the message to us)
-            // I think it is optional
-            //server.getAllUsersMessages().get()
         }
     }
 
-    // I guess it will be easier to do it directly (line 126):
-    private int countNewMessages(List<Message> receivedMessages) {
-        return receivedMessages.size();
-    }
 
-    public void createUser(){
+
+    public void createUser() {
         String newUserName = null;
-        System.out.println("\nLets create your new private user...\n");
+        System.out.println("Lets create your new private user...\n");
 
         boolean uniqueName = false;
 
@@ -224,6 +228,8 @@ public class App {
 
         privateUser.storeInFile();
 
+        server.serializeServer(); // Update a server data file
+
     }
 
     // Auxiliary methods
@@ -238,6 +244,7 @@ public class App {
                     new KeyPair(random.nextInt(), random.nextInt()));
         }
     }
+
 
     // Not real methods, just to test the program
     // made public and not static for testing
