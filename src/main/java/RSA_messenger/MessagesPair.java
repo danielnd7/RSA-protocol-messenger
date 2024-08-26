@@ -35,20 +35,6 @@ public class MessagesPair implements Serializable {
         return auxList;
     }
 
-    public void updateReceivedMessages(int selectedIndex) {
-        Message messageToCheck = getUncheckedReceivedMessages().get(selectedIndex);
-        boolean checked = false;
-        int index = 0;
-
-        while(index < receivedMessages.size() && !checked) {
-            if (receivedMessages.get(index).equals(messageToCheck)) {
-                receivedMessages.get(index).setChecked(true);
-                checked = true;
-            }
-            index++;
-        }
-    }
-
     public List<Message> getSentMessages() {
         return sentMessages;
     }

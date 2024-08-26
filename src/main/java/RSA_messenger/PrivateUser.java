@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class PrivateUser extends User{
     // Name of the file with data of privateUser
-    private static final String userDataFile = "userData.txt";
+    private static final String userDataFile = "user_own_data/userData.txt";
 
     //protected String userName;
     //protected KeyPair publicKey;

@@ -34,7 +34,7 @@ public class Server implements Serializable { // Server mock
     }
 
     public void serializeServer() {
-        try (FileOutputStream fileOutput = new FileOutputStream("server.ser");
+        try (FileOutputStream fileOutput = new FileOutputStream("user_own_data/server.ser");
              ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput)){
 
             objectOutput.writeObject(this);
@@ -52,7 +52,7 @@ public class Server implements Serializable { // Server mock
     public static Server deserializeServer(){
         Server server = null;
 
-        try (FileInputStream fileInput = new FileInputStream("server.ser");
+        try (FileInputStream fileInput = new FileInputStream("user_own_data/server.ser");
              ObjectInputStream objectInput = new ObjectInputStream(fileInput)){
 
             server = (Server) objectInput.readObject();

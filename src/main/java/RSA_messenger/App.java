@@ -108,6 +108,14 @@ public class App {
             // Adding the message to the Server's map:
 
             // Adding to the sender's messages
+
+
+            /*
+            * We have a problem here, maybe its a temporally bug but...:
+            * When I run the program and load the server and my privat user Manuel, when a I try to send a message
+            * for exameple for danichelo, the cosnole tells me that the value of the key (Manuel in this case) on
+            * allUserMessages map its null so cant add the sent message to the array list
+            * */
             server.getAllUsersMessages().get(privateUser).addSentMessage(message);
             // Adding to the recipient's messages
             server.getAllUsersMessages().get(receivingUser).addReceivedMessage(message);
@@ -126,13 +134,10 @@ public class App {
 
         System.out.println("\nSearching for messages...");
 
-        // Testing
-        // System.out.println("\n " + uncheckedMessages + " \n");
-
+        //Check for old messages
         if (uncheckedMessages.isEmpty()) {
             System.out.println("\nThere's no new messages...\n");
 
-            //Check for old messages (to do)
 
             System.out.println("Do you want to read old messages?");
             System.out.println("(1) YES");
@@ -204,8 +209,8 @@ public class App {
             System.out.println("Enter your user name: ");
 
             Scanner scanner = new Scanner(System.in);
-            if (scanner.hasNext()){
-                newUserName = scanner.next();
+            if (scanner.hasNextLine()){
+                newUserName = scanner.nextLine();
             }
 
             // Checking if there is already a user with the same name:
@@ -233,19 +238,6 @@ public class App {
     }
 
     // Auxiliary methods
-    public void createUserDemo(){ // Testing ONLY method
-        System.out.println("\nLets create your private user...\n");
-        System.out.println("Type your user name: ");
-        Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNextLine()) {
-            Random random = new Random();
-            privateUser = new PrivateUser(scanner.nextLine(),
-                    new KeyPair(random.nextInt(), random.nextInt()),
-                    new KeyPair(random.nextInt(), random.nextInt()));
-        }
-    }
-
-
     // Not real methods, just to test the program
     // made public and not static for testing
     public static void addRandomsUsers() {

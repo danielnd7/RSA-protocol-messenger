@@ -1,0 +1,6 @@
+
+j
+java:S1104"TMake userName a static final constant or non-public and provide accessors if needed.(©¸á
+p
+java:S1104"UMake publicKey a static final constant or non-public and provide accessors if needed.(ì®Ë²üÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(…²©ß
